@@ -52,14 +52,13 @@ class Shipping extends Method
 		// Loop methods and calculate available
 		foreach ( $this->methods as $name => $method ) {
 			// Check methods
-			if ( $this->checkMethods($method, $price, $weight) ) {
+			if ( $this->checkMethod($method, $price, $weight) ) {
 				$valid[] = $method;
 			}
 		}
 
 		// Debug
 		print_r($valid);
-		exit();
 
 		return $valid;
 	}
@@ -67,7 +66,6 @@ class Shipping extends Method
 	protected function checkMethod($method, $price, $weight)
 	{
 		print_r($method);
-		exit();
 	}
 
 }

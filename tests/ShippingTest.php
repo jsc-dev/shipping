@@ -22,6 +22,7 @@ class ShippingTest extends \PHPUnit_Framework_TestCase
 
     public function testBlank()
     {
+        $methods = $this->shipping->getValid(100.00, 67.50);
         $this->assertEquals(true, true);
     }
 
