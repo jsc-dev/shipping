@@ -22,4 +22,9 @@ namespace Moltin\Shipping;
 
 interface MethodInterface
 {
+	public function rates();
+
+	public function get($var);
+
+	public function set($var, $value);
 }
