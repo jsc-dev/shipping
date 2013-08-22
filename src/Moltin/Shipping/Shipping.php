@@ -49,11 +49,11 @@ class Shipping extends Method
 		// Variables
 		$valid = array();
 
-		// Loop methods and calculate available
-		foreach ( $this->methods as $name => $method ) {
-			// Check methods
-			if ( $this->checkMethod($method, $price, $weight) ) {
-				$valid[] = $method;
+		// Loop rates and calculate available
+		foreach ( $this->rates as $name => $rate ) {
+			// Check rate
+			if ( $this->checkRate($rate, $price, $weight) ) {
+				$valid[] = $rate;
 			}
 		}
 
@@ -63,9 +63,23 @@ class Shipping extends Method
 		return $valid;
 	}
 
-	protected function checkMethod($method, $price, $weight)
+	protected function checkRate($rate, $price, $weight)
 	{
-		print_r($method);
+		// Variables
+		$price_min  = $rate['limits']['price'][0];
+		$price_max  = ( isset($rate['limits']['price'][1]) ? $rate['limits']['price'][1] : null );
+		$weight_min = $rate['limits']['weight'][0];
+		$weight_max = ( isset($rate['limits']['weight'][1]) ? $rate['limits']['weight'][1] : null );
+
+        // Check pricing
+        if ( $price_min !== null and $price < $price_min ) { return false; }
+        if ( $price_max !== null and $price > $price_max ) { return false; }
+
+        // Check weight
+        if ( $weight !== null and $weight < $weight_min ) { return false; }
+        if ( $weight !== null and $weight > $weight_max ) { return false; }
+
+        return true;
 	}
 
 }
