@@ -23,11 +23,11 @@ namespace Moltin\Shipping;
 class Method
 {
 
-	protected $methods = array();
-	protected $rates   = array();
+    protected $methods = array();
+    protected $rates   = array();
 
-	public function methods()
-	{
+    public function methods()
+    {
         // Loop methods
         foreach (glob(__DIR__.'/Method/*') as $type) {
 
@@ -38,11 +38,11 @@ class Method
 
             // Skip classes with issues
             if ( ! $reflection->isInstantiable() ) continue;
-            
+
             // Load methods, rates, etc.
             $this->addMethod(new $class);
         }
-	}
+    }
 
     public function addMethod($class)
     {

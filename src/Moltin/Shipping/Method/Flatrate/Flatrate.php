@@ -23,46 +23,46 @@ namespace Moltin\Shipping\Method\Flatrate;
 class Flatrate implements \Moltin\Shipping\MethodInterface
 {
 
-	public $name = 'Flatrate';
+    public $name = 'Flatrate';
 
-	public function rates()
-	{
-		// Variables
-		$rates = array();
+    public function rates()
+    {
+        // Variables
+        $rates = array();
 
-		// Add some
-		$rates[] = array(
-			'name'   => 'Test Rate 01',
-			'price'  => 3.50,
-			'limits' => array(
-				'weight' => array(0, 100),
-				'price'  => array(0, 64.99)
-			)
-		);
+        // Add some
+        $rates[] = array(
+            'name'   => 'Test Rate 01',
+            'price'  => 3.50,
+            'limits' => array(
+                'weight' => array(0, 100),
+                'price'  => array(0, 64.99)
+            )
+        );
 
-		$rates[] = array(
-			'name'   => 'Test Rate 02 (Free)',
-			'price'  => 0,
-			'limits' => array(
-				'weight' => array(0, 100),
-				'price'  => array(65)
-			)
-		);
+        $rates[] = array(
+            'name'   => 'Test Rate 02 (Free)',
+            'price'  => 0,
+            'limits' => array(
+                'weight' => array(0, 100),
+                'price'  => array(65)
+            )
+        );
 
-		// Send it back
-		return $rates;
-	}
+        // Send it back
+        return $rates;
+    }
 
-	public function get($var)
-	{
-		if ( ! isset($this->$var) ) return;
-		return $this->$var;
-	}
+    public function get($var)
+    {
+        if ( ! isset($this->$var) ) return;
+        return $this->$var;
+    }
 
-	public function set($var, $val)
-	{
-		$this->$var = $val;
-		return $this;
-	}
+    public function set($var, $val)
+    {
+        $this->$var = $val;
+        return $this;
+    }
 
 }
