@@ -20,11 +20,19 @@
 
 namespace Moltin\Shipping;
 
-interface MethodInterface
+abstract class MethodAbstract
 {
-    public function rates();
+    abstract public function rates();
 
-    public function get($var);
+    public function get($var)
+    {
+        if ( ! isset($this->$var) ) return;
+        return $this->$var;
+    }
 
-    public function set($var, $value);
+    public function set($var, $val)
+    {
+        $this->$var = $val;
+        return $this;
+    }
 }

@@ -18,12 +18,12 @@
 *
 */
 
-namespace Moltin\Shipping\Method\Flatrate;
+namespace Moltin\Shipping\Method\DummyCallback;
 
-class Flatrate extends \Moltin\Shipping\MethodAbstract
+class DummyCallback extends \Moltin\Shipping\MethodAbstract
 {
 
-    public $name = 'Flatrate';
+    public $name = 'Dummy Callback';
 
     public function rates()
     {
@@ -37,15 +37,6 @@ class Flatrate extends \Moltin\Shipping\MethodAbstract
             'limits' => array(
                 'weight' => array(0, 100),
                 'price'  => array(0, 64.99)
-            )
-        );
-
-        $rates[] = array(
-            'name'   => 'Test Rate 02 (Free)',
-            'price'  => 0,
-            'limits' => array(
-                'weight' => array(0, 100),
-                'price'  => array(65)
             )
         );
 

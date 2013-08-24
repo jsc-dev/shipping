@@ -20,7 +20,7 @@
 
 namespace Moltin\Shipping\Method\Dummy;
 
-class Dummy implements \Moltin\Shipping\MethodInterface
+class Dummy extends \Moltin\Shipping\MethodAbstract
 {
 
     public $name = 'Dummy';
@@ -51,18 +51,6 @@ class Dummy implements \Moltin\Shipping\MethodInterface
 
         // Send it back
         return $rates;
-    }
-
-    public function get($var)
-    {
-        if ( ! isset($this->$var) ) return;
-        return $this->$var;
-    }
-
-    public function set($var, $val)
-    {
-        $this->$var = $val;
-        return $this;
     }
 
 }
