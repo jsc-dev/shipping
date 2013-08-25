@@ -32,6 +32,7 @@ class Flatrate extends \Moltin\Shipping\MethodAbstract
 
         // Add some
         $rates[] = array(
+        	'id'     => 'FLAT_01',
             'name'   => 'Test Rate 01',
             'price'  => 3.50,
             'limits' => array(
@@ -41,6 +42,7 @@ class Flatrate extends \Moltin\Shipping\MethodAbstract
         );
 
         $rates[] = array(
+        	'id'     => 'FLAT_02',
             'name'   => 'Test Rate 02 (Free)',
             'price'  => 0,
             'limits' => array(

@@ -32,6 +32,7 @@ class Dummy extends \Moltin\Shipping\MethodAbstract
 
         // Add some
         $rates[] = array(
+            'id'     => 'DUMMY_01',
             'name'   => 'Test Rate 01',
             'price'  => 3.50,
             'limits' => array(
@@ -41,6 +42,7 @@ class Dummy extends \Moltin\Shipping\MethodAbstract
         );
 
         $rates[] = array(
+            'id'     => 'DUMMY_02',
             'name'   => 'Test Rate 02 (Free)',
             'price'  => 0,
             'limits' => array(
