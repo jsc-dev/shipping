@@ -32,16 +32,18 @@ class DummyCallback extends \Moltin\Shipping\MethodAbstract
 
         // Add some
         $rates[] = array(
-            'name'   => 'Test Rate 01',
-            'price'  => 3.50,
-            'limits' => array(
-                'weight' => array(0, 100),
-                'price'  => array(0, 64.99)
-            )
+            'name'   => 'Test Rate with Callback',
+            'price'  => 0.00,
+            'limits' => '_priceCallback'
         );
 
         // Send it back
         return $rates;
     }
 
+    public function _priceCallback(&$rate)
+    {
+        $rate['price'] = 3.50;
+        return true;
+    }
 }

@@ -25,10 +25,27 @@ use Moltin\Shipping\Exception\InvalidMethodException;
 class Shipping extends Method
 {
 
+    protected $args;
+
     public function __construct(StorageInterface $storage, $args = array())
     {
-        // Build methods
-        if ( isset($args['methods']) and is_array($args['methods']) ) { $this->methods($args['methods']); } else { $this->methods(); }
+        // Set args
+        $this->args = $args;
+
+        // Build paths
+        if ( isset($args['paths']) and is_array($args['paths']) ) { $this->paths = array_merge($this->paths, $args['paths']); }
+
+        // Add default path and build methods
+        $this->addPath(__DIR__.'/Method/');
+    }
+
+    public function addPath($path)
+    {
+        // Add to path
+        $this->paths[] = $path;
+
+        // Rebuild methods
+        if ( isset($this->args['methods']) and is_array($this->args['methods']) ) { $this->methods($this->args['methods']); } else { $this->methods(); }
     }
 
     public function calculate(\Moltin\Cart\Cart $cart)
@@ -50,7 +67,7 @@ class Shipping extends Method
         $valid = array();
 
         // Loop rates and calculate available
-        foreach ( $this->rates as $name => $rate ) {
+        foreach ( $this->rates as $name => &$rate ) {
             // Check rate
             if ( $this->checkRate($rate, $price, $weight) ) {
                 $valid[] = $rate;
@@ -63,12 +80,18 @@ class Shipping extends Method
         return $valid;
     }
 
-    protected function checkRate($rate, $price, $weight)
+    protected function checkRate(&$rate, $price, $weight)
     {
+        // Check for callback
+        if ( ! is_array($rate['limits']) and substr($rate['limits'], 0, 1) == '_' ) {
+            if ( $this->methods[$rate['name']]->$rate['limits']($rate) ) { return true; }
+            return false;
+        }
+
         // Variables
-        $price_min  = $rate['limits']['price'][0];
-        $price_max  = ( isset($rate['limits']['price'][1]) ? $rate['limits']['price'][1] : null );
-        $weight_min = $rate['limits']['weight'][0];
+        $price_min  = ( isset($rate['limits']['price'][0])  ? $rate['limits']['price'][0]  : null );
+        $price_max  = ( isset($rate['limits']['price'][1])  ? $rate['limits']['price'][1]  : null );
+        $weight_min = ( isset($rate['limits']['weight'][0]) ? $rate['limits']['weight'][0] : null );
         $weight_max = ( isset($rate['limits']['weight'][1]) ? $rate['limits']['weight'][1] : null );
 
         // Check pricing

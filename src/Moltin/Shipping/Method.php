@@ -23,24 +23,33 @@ namespace Moltin\Shipping;
 class Method
 {
 
+    protected $paths   = array();
     protected $methods = array();
     protected $rates   = array();
 
-    public function methods()
+    public function methods($types = array())
     {
-        // Loop methods
-        foreach (glob(__DIR__.'/Method/*') as $type) {
+        // Loop paths
+        foreach ( $this->paths as $path ) {
 
-            // Get class
-            $class      = basename($type);
-            $class      = "Moltin\\Shipping\\Method\\{$class}\\{$class}";
-            $reflection = new \ReflectionClass($class);
+            // Loop methods
+            foreach ( glob($path.'*') as $type ) {
 
-            // Skip classes with issues
-            if ( ! $reflection->isInstantiable() ) continue;
+                // Do we want to load this?
+                if ( is_array($types) and ! empty($types) and ! in_array($type, $types) ) { continue; }
 
-            // Load methods, rates, etc.
-            $this->addMethod(new $class);
+                // Get class
+                $class      = basename($type);
+                $class      = "Moltin\\Shipping\\Method\\{$class}\\{$class}";
+                $reflection = new \ReflectionClass($class);
+
+                // Skip classes with issues
+                if ( ! $reflection->isInstantiable() ) continue;
+
+                // Load methods, rates, etc.
+                $this->addMethod(new $class);
+            }
+
         }
     }
 
