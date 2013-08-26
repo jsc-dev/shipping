@@ -24,7 +24,67 @@ Via Composer
 
 ## Usage
 
-Coming Soon
+Below is a basic usage guide for this package.
+
+### Instantiating the Package
+
+Before you begin you will need to instantiate the package.
+
+``` php
+use Moltin\Shipping\Method;
+use Moltin\Shipping\Shipping;
+use Moltin\Shipping\Storage\Session as Storage;
+
+
+$shipping = new Shipping(new Storage);
+```
+
+A number of custom arguments can be passed as an array as the second argument when instantiating the cart, including:
+
+``` php
+$args = array(
+	'paths'   => array(), // A list of custom paths to check for shipping drivers
+	'methods' => array(), // A list of shipping driver names to load, defaults to loading all
+);
+
+$shipping = new Shipping(new Storage, $args);
+```
+
+### Adding a Custom Path
+
+If you would like to load a custom path after the package has been instantiated you can do so as follows:
+
+``` php
+$shipping->addPath('/Shipping Drivers/');
+```
+
+The directory will then be automatically scanned and the drivers loaded for you to use.
+
+### Calculating Shipping Methods
+
+There are two main ways to calculate the shipping methods that are relevant to your items.
+
+#### Manually
+
+Firstly you can use the following method, passing in $price and $weight of the items you are shipping:
+
+``` php
+$methods = $shipping->getValid(65.00, 3.50);
+var_dump($methods);
+```
+
+*Note:* Whenever you pass a weight the package and its' drivers expect to use KGs
+
+#### From a Cart
+
+Secondly, if you are using the Moltin/Cart package you can pass your cart object and it will
+calculate the above values for you and pass back the available methods.
+
+``` php
+$methods = $shipping->calculate($cart);
+var_dump($methods);
+```
+
 
 
 ## Testing
@@ -32,7 +92,6 @@ Coming Soon
 ``` bash
 $ phpunit
 ```
-
 
 ## Contributing
 
