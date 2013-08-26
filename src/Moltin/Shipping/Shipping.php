@@ -75,7 +75,7 @@ class Shipping extends Method
         }
 
         // Debug
-        print_r($valid);
+        // print_r($valid);
 
         return $valid;
     }

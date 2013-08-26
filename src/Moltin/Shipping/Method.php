@@ -20,17 +20,33 @@
 
 namespace Moltin\Shipping;
 
+use Moltin\Shipping\Exception\InvalidMethodException;
+
 class Method
 {
-
     protected $paths   = array();
     protected $methods = array();
     protected $rates   = array();
+
+    protected $_loaded = array();
+
+    public function getMethod($name)
+    {
+        // Check the method exists and is loaded
+        if ( ! array_key_exists($name, $this->methods) ) {
+            throw new InvalidMethodException('The requested method was not found');
+        }
+
+        return $this->methods[$name];
+    }
 
     public function methods($types = array())
     {
         // Loop paths
         foreach ( $this->paths as $path ) {
+
+            // No need to load more than once
+            if ( in_array($path, $this->_loaded) ) { continue; }
 
             // Loop methods
             foreach ( glob($path.'*') as $type ) {
@@ -44,12 +60,14 @@ class Method
                 $reflection = new \ReflectionClass($class);
 
                 // Skip classes with issues
-                if ( ! $reflection->isInstantiable() ) continue;
+                if ( ! $reflection->isInstantiable() ) { continue; }
 
                 // Load methods, rates, etc.
                 $this->addMethod(new $class);
             }
 
+            // Add to loaded
+            $this->_loaded[] = $path;
         }
     }
 
