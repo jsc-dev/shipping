@@ -18,8 +18,6 @@
 *
 */
 
-namespace Moltin\Shipping\Method\DummyCallback;
-
 class DummyCallback extends \Moltin\Shipping\MethodAbstract
 {
 

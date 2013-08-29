@@ -36,13 +36,17 @@ class MethodTest extends \PHPUnit_Framework_TestCase
         $this->shipping->getMethod('Not A Real Method');
     }
 
-    /*public function testAddPath()
+    public function testAddCustomMethod()
     {
-        // Load path and get dummy
-        $this->shipping->addPath(__DIR__.'\\TestMethods\\');
+        // Load dummy and add it
+        require(__DIR__.'\\TestMethods\\Dummy\\Dummy.php');
+        $dummy = new \Dummy();
+        $this->shipping->addMethod($dummy);
+
+        // Get the method from shipping
         $method = $this->shipping->getMethod('Dummy');
 
         $this->assertEquals(is_object($method), true);
-    }*/
+    }
 
 }

@@ -32,20 +32,9 @@ class Shipping extends Method
         // Set args
         $this->args = $args;
 
-        // Build paths
-        if ( isset($args['paths']) and is_array($args['paths']) ) { $this->paths = array_merge($this->paths, $args['paths']); }
-
         // Add default path and build methods
-        $this->addPath(__DIR__.'/Method/');
-    }
-
-    public function addPath($path)
-    {
-        // Add to path
-        $this->paths[] = $path;
-
-        // Rebuild methods
-        if ( isset($this->args['methods']) and is_array($this->args['methods']) ) { $this->methods($this->args['methods']); } else { $this->methods(); }
+        $this->paths[] = __DIR__.'/Method/';
+        if ( isset($args['methods']) and is_array($args['methods']) ) { $this->methods($args['methods']); } else { $this->methods(); }
     }
 
     public function calculate(\Moltin\Cart\Cart $cart)
@@ -83,8 +72,8 @@ class Shipping extends Method
     protected function checkRate(&$rate, $price, $weight)
     {
         // Check for callback
-        if ( ! is_array($rate['limits']) and substr($rate['limits'], 0, 1) == '_' ) {
-            if ( $this->methods[$rate['name']]->$rate['limits']($rate) ) { return true; }
+        if ( isset($rate['limits']['callback']) ) {
+            if ( $this->methods[$rate['name']]->$rate['limits']['callback']($rate) ) { return true; }
             return false;
         }
 

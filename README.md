@@ -43,22 +43,22 @@ A number of custom arguments can be passed as an array as the second argument wh
 
 ``` php
 $args = array(
-	'paths'   => array(), // A list of custom paths to check for shipping drivers
 	'methods' => array(), // A list of shipping driver names to load, defaults to loading all
 );
 
 $shipping = new Shipping(new Storage, $args);
 ```
 
-### Adding a Custom Path
+### Adding a Custom Driver
 
-If you would like to load a custom path after the package has been instantiated you can do so as follows:
+If you would like to load a custom driver, you can do so as follows:
 
 ``` php
-$shipping->addPath('/Shipping Drivers/');
+$driver = new MyDriver();
+$shipping->addMethod($driver);
 ```
 
-The directory will then be automatically scanned and the drivers loaded for you to use.
+The driver will then be automatically processed and available for all subsequent methods.
 
 ### Calculating Shipping Methods
 

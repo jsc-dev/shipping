@@ -18,8 +18,6 @@
 *
 */
 
-namespace Moltin\Shipping\Method\Dummy;
-
 class Dummy extends \Moltin\Shipping\MethodAbstract
 {
 
