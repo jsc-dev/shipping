@@ -49,4 +49,20 @@ class MethodTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(is_object($method), true);
     }
 
+    public function testCallbackPrice()
+    {
+        // Load dummy and add it
+        require(__DIR__.'\\TestMethods\\DummyCallback\\DummyCallback.php');
+        $dummy = new \DummyCallback();
+        $this->shipping->addMethod($dummy);
+
+        // Calculate to fire callback
+        $this->shipping->getValid(65.00, 10.00);
+
+        // Get the rate
+        $rate = $this->shipping->getRate('DUMMY_CALL_01');
+
+        $this->assertEquals($rate['price'], 3.50);
+    }
+
 }

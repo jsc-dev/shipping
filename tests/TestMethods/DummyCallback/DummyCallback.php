@@ -33,7 +33,9 @@ class DummyCallback extends \Moltin\Shipping\MethodAbstract
             'id'     => 'DUMMY_CALL_01',
             'name'   => 'Test Rate with Callback',
             'price'  => 0.00,
-            'limits' => '_priceCallback'
+            'limits' => array(
+                'callback' => '_priceCallback'
+            )
         );
 
         // Send it back

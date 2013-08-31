@@ -21,6 +21,7 @@
 namespace Moltin\Shipping;
 
 use Moltin\Shipping\Exception\InvalidMethodException;
+use Moltin\Shipping\Exception\InvalidRateException;
 
 class Shipping extends Method
 {
@@ -69,27 +70,47 @@ class Shipping extends Method
         return $valid;
     }
 
-    protected function checkRate(&$rate, $price, $weight)
+    public function getRate($id)
     {
-        // Check for callback
-        if ( isset($rate['limits']['callback']) ) {
-            if ( $this->methods[$rate['name']]->$rate['limits']['callback']($rate) ) { return true; }
-            return false;
+        // Loop and find rate
+        foreach ( $this->rates as $rate ) {
+            if ( $rate['id'] == $id ) { return $rate; }
         }
 
-        // Variables
-        $price_min  = ( isset($rate['limits']['price'][0])  ? $rate['limits']['price'][0]  : null );
-        $price_max  = ( isset($rate['limits']['price'][1])  ? $rate['limits']['price'][1]  : null );
-        $weight_min = ( isset($rate['limits']['weight'][0]) ? $rate['limits']['weight'][0] : null );
-        $weight_max = ( isset($rate['limits']['weight'][1]) ? $rate['limits']['weight'][1] : null );
+        // Not found
+        throw new InvalidRateException('The requested rate was not found');
+    }
 
-        // Check pricing
-        if ( $price_min !== null and $price < $price_min ) { return false; }
-        if ( $price_max !== null and $price > $price_max ) { return false; }
+    protected function checkRate(&$rate, $price, $weight)
+    {
+        // Check price
+        if ( isset($rate['limits']['price']) ) {
+
+            // Get values
+            $price_min  = ( isset($rate['limits']['price'][0])  ? $rate['limits']['price'][0]  : null );
+            $price_max  = ( isset($rate['limits']['price'][1])  ? $rate['limits']['price'][1]  : null );
+
+            // Check
+            if ( $price_min !== null and $price < $price_min ) { return false; }
+            if ( $price_max !== null and $price > $price_max ) { return false; }
+        }
 
         // Check weight
-        if ( $weight !== null and $weight < $weight_min ) { return false; }
-        if ( $weight !== null and $weight > $weight_max ) { return false; }
+        if ( isset($rate['limits']['weight']) ) {
+
+            // Get values
+            $weight_min  = ( isset($rate['limits']['weight'][0])  ? $rate['limits']['weight'][0]  : null );
+            $weight_max  = ( isset($rate['limits']['weight'][1])  ? $rate['limits']['weight'][1]  : null );
+
+            // Check
+            if ( $weight_min !== null and $weight < $weight_min ) { return false; }
+            if ( $weight_max !== null and $weight > $weight_max ) { return false; }
+        }
+
+        // Check callback
+        if ( isset($rate['limits']['callback']) ) {
+            if ( ! $this->methods[$rate['name']]->$rate['limits']['callback']($rate) ) { return false; }
+        }
 
         return true;
     }

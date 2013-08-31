@@ -20,6 +20,19 @@ class ShippingTest extends \PHPUnit_Framework_TestCase
         $this->shipping = null;
     }
 
+    public function testGetRate()
+    {
+        $this->assertEquals(true, true);
+    }
+
+    /**
+    * @expectedException Moltin\Shipping\Exception\InvalidRateException
+    */
+    public function testBadGetRate()
+    {
+        $this->shipping->getRate('Not A Real Rate');
+    }
+
     public function testBlank()
     {
         $methods = $this->shipping->getValid(100.00, 67.50);
