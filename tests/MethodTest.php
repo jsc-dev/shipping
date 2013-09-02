@@ -51,8 +51,11 @@ class MethodTest extends \PHPUnit_Framework_TestCase
 
     public function testCallbackPrice()
     {
+        // Variables
+        $sep = DIRECTORY_SEPARATOR;
+
         // Load dummy and add it
-        require(__DIR__.'\\TestMethods\\DummyCallback\\DummyCallback.php');
+        require(__DIR__."{$sep}TestMethods{$sep}DummyCallback{$sep}DummyCallback.php");
         $dummy = new \DummyCallback();
         $this->shipping->addMethod($dummy);
 
