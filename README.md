@@ -35,7 +35,6 @@ use Moltin\Shipping\Method;
 use Moltin\Shipping\Shipping;
 use Moltin\Shipping\Storage\Session as Storage;
 
-
 $shipping = new Shipping(new Storage);
 ```
 
